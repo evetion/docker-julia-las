@@ -1,12 +1,12 @@
-FROM julia:0.5.2
-MAINTAINER 'Maarten Pronk' <docker@evetion.nl>
+FROM julia:0.6
+MAINTAINER 'Maarten Pronk' <git@evetion.nl>
 
 # Install required development packages
 RUN apt-get update && apt-get install -y \
     libtiff-dev libgeotiff-dev libgdal-dev libboost-system-dev libboost-thread-dev libboost-serialization-dev \
     libboost-filesystem-dev libboost-program-options-dev libboost-regex-dev libboost-iostreams-dev \
     git cmake build-essential wget automake autoconf autogen apt-utils libtool \
-    gdal-bin libgdal-dev && rm -rf /var/lib/apt/lists/*
+    gdal-bin libgdal-dev python-pip libyaml-dev && rm -rf /var/lib/apt/lists/*
 
 # Compile laszip & liblas
 WORKDIR /opt
@@ -15,7 +15,7 @@ RUN git clone https://github.com/LASzip/LASzip.git \
     && make -j$(nproc) && make install && ldconfig
 WORKDIR /opt
 RUN git clone git://github.com/libLAS/libLAS.git \
-    && cd libLAS && git checkout tags/1.8.1 && mkdir /opt/libLAS/makedir && cd /opt/libLAS/makedir \
+    && cd libLAS && git checkout tags/1.8.1 && mkdir makedir && cd makedir \
     && cmake -DWITH_LASZIP=TRUE -G "Unix Makefiles" ../ && make -j$(nproc) && make install && ldconfig
 
 # Remove development packages
@@ -29,6 +29,4 @@ RUN apt-get purge -y \
 COPY docker_install.jl install.jl
 RUN julia install.jl
 
-# Run Julia
-ENTRYPOINT ["julia"]
-CMD ["--help"]
+ENTRYPOINT []
