@@ -3,7 +3,7 @@ MAINTAINER 'Maarten Pronk' <git@evetion.nl>
 
 # Install required development packages
 RUN apt-get update && apt-get install -y \
-    automake autoconf autogen apt-utils libtool git build-essential\
+    automake autoconf autogen apt-utils libtool vim git build-essential\
     && rm -rf /var/lib/apt/lists/*
 
 # Compile laszip & liblas
