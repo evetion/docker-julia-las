@@ -19,5 +19,5 @@ RUN apt-get purge -y \
 # Install required Julia packages
 COPY docker_install.jl install.jl
 RUN julia install.jl
-ENV LD_PRELOAD=`julia -e "println(Pkg.dir())"`/Conda/deps/usr/lib/libz.so
+ENV LD_PRELOAD="/root/.julia/v0.6/Conda/deps/usr/lib/libz.so"
 ENTRYPOINT []
